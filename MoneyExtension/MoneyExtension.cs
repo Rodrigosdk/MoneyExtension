@@ -1,0 +1,29 @@
+﻿using static System.Net.Mime.MediaTypeNames;
+
+namespace MoneyExtension;
+
+public static class Money
+{
+    public static int ToCents(this decimal amount)
+    {
+        if (amount <= 0)
+            return 0;
+        var text = amount
+            .ToString(format: "N2")
+            .Replace(oldValue: ",", newValue: "")
+            .Replace(oldValue: ".",newValue: "");
+
+        if (string.IsNullOrEmpty(text))
+            return 0;
+
+        int.TryParse(text, out var result);
+        return result;
+
+    }
+
+
+
+
+
+
+}
