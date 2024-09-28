@@ -1,28 +1,25 @@
-name: Build and deploy package
+name: Build and deploy
 
 on:
-    push:
-        branches:
-            - main
+  push:
+    branches:
+      - main
+
 jobs:
-    build-and-deploy:
-        runs-on: ubuntu-lateste
-        steps:
-        - uses: actions/checkout@main
-        - name: Set up .NET CORE
-          uses: actions/setup-dotnet@v2
-          with:
-            dotne-version: '8.0.x'
+  build:
+    runs-on: ubuntu-latest
 
-        - name: Build with dotnet
-          run: dotnet build --configuration Release
+    steps:
+      - uses: actions/checkout@v2
 
-        - name: Test
-          run: dotnet test
+      - name: Set up .NET Core
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '6.0.x'
+          include-prerelease: true
+      
+      - name: Build with dotnet
+        run: dotnet build --configuration Release
 
-        - name: Create the package
-          run: dotnet pack --configuration Release
-        
-        - name: Publish
-          run: dotnet nuget push "MoneyExtension/MoneyExtension/bin/Release/*.nupkg" -k ${{secrets.NUGET_TOKEN}} -s https://api.nuget.org/v3/index.json
-            
+      - name: Publish
+        run: dotnet nuget push "MoneyExtension/MoneyExtension/bin/Release/*.nupkg" -k ${{secrets.NUGET_TOKEN}} -s https://api.nuget.org/v3/index.json
