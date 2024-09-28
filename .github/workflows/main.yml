@@ -20,6 +20,7 @@ jobs:
       
       - name: Build with dotnet
         run: dotnet build --configuration Release
-
+      - name: Create the package
+        run: dotnet pack --configuration Release
       - name: Publish
         run: dotnet nuget push "MoneyExtension/MoneyExtension/bin/Release/*.nupkg" -k ${{secrets.NUGET_TOKEN}} -s https://api.nuget.org/v3/index.json
